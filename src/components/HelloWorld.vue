@@ -4,7 +4,10 @@
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
+      <a
+href="https://cli.vuejs.org"
+target="_blank"
+rel="noopener"
         >vue-cli documentation</a
       >.
     </p>
@@ -41,17 +44,26 @@
         <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
       </li>
       <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
+        <a
+href="https://forum.vuejs.org"
+target="_blank"
+rel="noopener"
           >Forum</a
         >
       </li>
       <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
+        <a
+href="https://chat.vuejs.org"
+target="_blank"
+rel="noopener"
           >Community Chat</a
         >
       </li>
       <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
+        <a
+href="https://twitter.com/vuejs"
+target="_blank"
+rel="noopener"
           >Twitter</a
         >
       </li>
@@ -62,7 +74,10 @@
     <h3>Ecosystem</h3>
     <ul>
       <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
+        <a
+href="https://router.vuejs.org"
+target="_blank"
+rel="noopener"
           >vue-router</a
         >
       </li>
@@ -78,7 +93,10 @@
         >
       </li>
       <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
+        <a
+href="https://vue-loader.vuejs.org"
+target="_blank"
+rel="noopener"
           >vue-loader</a
         >
       </li>
@@ -96,11 +114,11 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: 'HelloWorld',
   props: {
     msg: String
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
