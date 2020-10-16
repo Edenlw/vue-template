@@ -143,14 +143,8 @@ module.exports = {
     'no-multiple-empty-lines': [2, { // 禁止多个空行
       'max': 1
     }],
-    'no-native-reassign': 2,
-    'no-negated-in-lhs': 2,
-    'no-new-object': 2,
-    'no-new-require': 2,
-    'no-new-symbol': 2,
-    'no-new-wrappers': 2,
-    'no-obj-calls': 2,
-    'no-octal': 2,
+    'no-new-object': 2,   //不允许使用Object构造函数
+    'no-new-require': 2,  //消除new require表达的使用
     'no-octal-escape': 2,
     'no-path-concat': 2,
     'no-proto': 2,
@@ -199,7 +193,7 @@ module.exports = {
       'avoidEscape': true,
       'allowTemplateLiterals': true
     }],
-    'semi': [2, 'never'],
+    'semi': [2, 'always'],   // 强制语句分号结尾
     'semi-spacing': [2, {
       'before': false,
       'after': true

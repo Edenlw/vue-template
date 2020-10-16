@@ -1,8 +1,9 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
+
 
 const routes = [
   {
@@ -16,7 +17,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',

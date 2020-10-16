@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
@@ -113,6 +114,12 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods: {
+    aaa() {
+      var Aobj = {};
+      console.log(Aobj);
+    }
   }
 }
 </script>
