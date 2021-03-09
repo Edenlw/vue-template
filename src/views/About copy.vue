@@ -38,40 +38,14 @@ export default {
   },
   mounted() {
     this.init();
-    console.log(G6.registerEdge(), 9);
   },
   methods: {
     init() {
-      console.log(G6, 6);
-      G6.registerEdge('mid-point-edge',
-        {
-          afterDraw(cfg, group) {
-          // 获取图形组中的第一个图形，在这里就是边的路径图形
-            debugger;
-            const shape = group.get('children')[0];
-            // 获取路径图形的中点坐标
-            const midPoint = shape.getPoint(0.5);
-            // 在中点增加一个矩形，注意矩形的原点在其左上角
-            group.addShape('rect', {
-              attrs: {
-                width: 10,
-                height: 10,
-                fill: '#f00',
-                // x 和 y 分别减去 width / 2 与 height / 2，使矩形中心在 midPoint 上
-                x: midPoint.x - 5,
-                y: midPoint.y - 5
-              }
-            });
-          },
-          update: undefined
-        },
-        'cubic'
-      );
       const data = {
         nodes: [
           {
-            id: 'rect1',
-            label: 'rect1',
+            id: 'rect',
+            label: 'rect',
             x: 250,
             y: 150,
             anchorPoints: [
@@ -82,7 +56,7 @@ export default {
             ]
           },
           {
-            id: 'rect2',
+            id: 'rect1',
             label: 'rect2',
             x: 450,
             y: 150,
@@ -96,16 +70,25 @@ export default {
         ],
         edges: [
           {
-            source: 'rect1',
-            target: 'rect2',
+            source: 'node1',
+            target: 'node2',
             // 该边连入 source 点的第 0 个 anchorPoint，
-            sourceAnchor: 0.5,
+            sourceAnchor: 0,
             // 该边连入 target 点的第 0 个 anchorPoint，
-            targetAnchor: 0.5,
-            type: 'cubic',
+            targetAnchor: 0,
             style: {
-              endArrow: true,
-              stroke: 'red'
+              endArrow: true
+            }
+          },
+          {
+            source: 'node2',
+            target: 'node1',
+            // 该边连入 source 点的第 1 个 anchorPoint，
+            sourceAnchor: 1,
+            // 该边连入 source 点的第 1 个 anchorPoint，
+            targetAnchor: 1,
+            style: {
+              endArrow: true
             }
           }
         ]

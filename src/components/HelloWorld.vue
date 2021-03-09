@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2020-10-13 17:12:27
- * @LastEditTime: 2020-10-17 14:55:14
+ * @LastEditTime: 2020-10-20 09:42:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \vue-template\src\components\HelloWorld.vue
 -->
 <template>
   <div>
-    <svg width="960" height="600"></svg>
+
   </div>
 </template>
 
@@ -17,136 +17,137 @@ import * as d3 from 'd3';
 export default {
   components: {},
   data() {
-    return {};
+    return {
+
+    };
   },
   mounted() {
-    const svg = d3.select('svg');
-    const width = +svg.attr('width');
-    const height = +svg.attr('height');
+    var nodes = [{
+      name: '桂林'
+    }, {
+      name: '广州'
+    }, {
+      name: '厦门'
+    }, {
+      name: '杭州'
+    }, {
+      name: '上海'
+    }, {
+      name: '青岛'
+    }, {
+      name: '天津'
+    }];
 
-    const nodesData = [
-      { name: 'Lillian', sex: 'F' },
-      { name: 'Gordon', sex: 'M' },
-      { name: 'Sylvester', sex: 'M' },
-      { name: 'Mary', sex: 'F' },
-      { name: 'Helen', sex: 'F' },
-      { name: 'Jamie', sex: 'M' },
-      { name: 'Jessie', sex: 'F' },
-      { name: 'Ashton', sex: 'M' },
-      { name: 'Duncan', sex: 'M' },
-      { name: 'Evette', sex: 'F' },
-      { name: 'Mauer', sex: 'M' },
-      { name: 'Fray', sex: 'F' },
-      { name: 'Duke', sex: 'M' },
-      { name: 'Baron', sex: 'M' },
-      { name: 'Infante', sex: 'M' },
-      { name: 'Percy', sex: 'M' },
-      { name: 'Cynthia', sex: 'F' }
-    ];
+    var edges = [{
+      source: 0,
+      target: 1
+    }, {
+      source: 0,
+      target: 2
+    }, {
+      source: 0,
+      target: 3
+    }, {
+      source: 1,
+      target: 4
+    }, {
+      source: 1,
+      target: 5
+    }, {
+      source: 1,
+      target: 6
+    }];
+    var width = 400;
+    var height = 400;
+    var svg = d3.select('body')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+    console.log(d3.forceSimulation(), 9);
+    debugger;
+    var force = d3.forceSimulation().force()
+      .nodes(nodes) // 指定节点数组
+      .links(edges) // 指定连线数组
+      .size([width, height]) // 指定范围
+      .linkDistance(150) // 指定连线长度
+      .charge(-400); // 相互之间的作用力
 
-    const linksData = [
-      { source: 'Sylvester', target: 'Gordon', type: 'A' },
-      { source: 'Sylvester', target: 'Lillian', type: 'A' },
-      { source: 'Sylvester', target: 'Mary', type: 'A' },
-      { source: 'Sylvester', target: 'Jamie', type: 'A' },
-      { source: 'Sylvester', target: 'Jessie', type: 'A' },
-      { source: 'Sylvester', target: 'Helen', type: 'A' },
-      { source: 'Helen', target: 'Gordon', type: 'A' },
-      { source: 'Mary', target: 'Lillian', type: 'A' },
-      { source: 'Ashton', target: 'Mary', type: 'A' },
-      { source: 'Duncan', target: 'Jamie', type: 'A' },
-      { source: 'Gordon', target: 'Jessie', type: 'A' },
-      { source: 'Sylvester', target: 'Fray', type: 'E' },
-      { source: 'Fray', target: 'Mauer', type: 'A' },
-      { source: 'Fray', target: 'Cynthia', type: 'A' },
-      { source: 'Fray', target: 'Percy', type: 'A' },
-      { source: 'Percy', target: 'Cynthia', type: 'A' },
-      { source: 'Infante', target: 'Duke', type: 'A' },
-      { source: 'Duke', target: 'Gordon', type: 'A' },
-      { source: 'Duke', target: 'Sylvester', type: 'A' },
-      { source: 'Baron', target: 'Duke', type: 'A' },
-      { source: 'Baron', target: 'Sylvester', type: 'E' },
-      { source: 'Evette', target: 'Sylvester', type: 'E' },
-      { source: 'Cynthia', target: 'Sylvester', type: 'E' },
-      { source: 'Cynthia', target: 'Jamie', type: 'E' },
-      { source: 'Mauer', target: 'Jessie', type: 'E' }
-    ];
+    force.start(); // 开始作用
 
-    const simulation = d3.forceSimulation().nodes(nodesData);
+    console.log(nodes);
+    console.log(edges);
 
-    simulation
-      .force('charge_force', d3.forceManyBody())
-      .force('center_force', d3.forceCenter(width / 2, height / 2));
+    // 添加连线
+    var svg_edges = svg.selectAll('line')
+      .data(edges)
+      .enter()
+      .append('line')
+      .style('stroke', '#ccc')
+      .style('stroke-width', 1);
 
-    const node = svg
-      .append('g')
-      .attr('class', 'nodes')
-      .selectAll('circle')
-      .data(nodesData)
+    var color = d3.scale.category20();
+
+    // 添加节点
+    var svg_nodes = svg.selectAll('circle')
+      .data(nodes)
       .enter()
       .append('circle')
-      .attr('r', 10)
-      .attr('fill', this.circleColor);
+      .attr('r', 20)
+      .style('fill', function(d, i) {
+        return color(i);
+      })
+      .call(force.drag); // 使得节点能够拖动
 
-    simulation.on('tick', tickAction);
+    // 添加描述节点的文字
+    var svg_texts = svg.selectAll('text')
+      .data(nodes)
+      .enter()
+      .append('text')
+      .style('fill', 'black')
+      .attr('dx', 20)
+      .attr('dy', 8)
+      .text(function(d) {
+        return d.name;
+      });
 
-    function tickAction() {
-      node
-        .attr('cx', (d) => {
-          return d.x;
+    force.on('tick', function() { // 对于每一个时间间隔
+      // 更新连线坐标
+      svg_edges.attr('x1', function(d) {
+        return d.source.x;
+      })
+        .attr('y1', function(d) {
+          return d.source.y;
         })
-        .attr('cy', (d) => {
+        .attr('x2', function(d) {
+          return d.target.x;
+        })
+        .attr('y2', function(d) {
+          return d.target.y;
+        });
+
+      // 更新节点坐标
+      svg_nodes.attr('cx', function(d) {
+        return d.x;
+      })
+        .attr('cy', function(d) {
           return d.y;
         });
 
-      link
-        .attr('x1', (d) => {
-          return d.source.x;
-        })
-        .attr('y1', (d) => {
-          return d.source.y;
-        })
-        .attr('x2', (d) => {
-          return d.target.x;
-        })
-        .attr('y2', (d) => {
-          return d.target.y;
+      // 更新文字坐标
+      svg_texts.attr('x', function(d) {
+        return d.x;
+      })
+        .attr('y', function(d) {
+          return d.y;
         });
-    }
-
-    const linkForce = d3.forceLink(linksData).id((d) => {
-      return d.name;
     });
-
-    simulation.force('links', linkForce);
-
-    const link = svg
-      .append('g')
-      .attr('class', 'links')
-      .selectAll('line')
-      .data(linksData)
-      .enter()
-      .append('line')
-      .attr('stroke-width', 2)
-      .style('stroke', this.linkColor);
   },
   methods: {
-    circleColor(d) {
-      if (d.sex === 'M') {
-        return 'blue';
-      } else {
-        return 'pink';
-      }
-    },
-    linkColor(d) {
-      if (d.type === 'A') {
-        return 'green';
-      } else {
-        return 'red';
-      }
-    }
+
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang='scss' scoped>
+
+</style>

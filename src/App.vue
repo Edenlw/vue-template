@@ -1,9 +1,16 @@
+<!--
+ * @Author: liuwei
+ * @Date: 2020-10-13 17:12:27
+ * @LastEditors: liuwei
+ * @LastEditTime: 2021-03-05 16:55:40
+ * @Description: file content
+-->
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
+    </div> -->
     <router-view />
   </div>
 </template>

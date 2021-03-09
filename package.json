@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "dev-build": "vue-cli-service build --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
@@ -20,10 +21,16 @@
     ]
   },
   "dependencies": {
+    "@antv/g6": "^4.1.15",
+    "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "d3": "^6.2.0",
+    "element-ui": "^2.15.1",
+    "npm-btn": "^0.1.0",
+    "view-design": "^4.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vuedraggable": "^2.24.3",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
