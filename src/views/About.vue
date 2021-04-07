@@ -31,7 +31,8 @@ export default {
         { people: 'cn', id: 1, name: 'table' },
         { people: 'cn', id: 2, name: 'user' },
         { people: 'cn', id: 3, name: 'data' },
-        { people: 'us', id: 4, name: 'report' }
+        { people: 'us', id: 4, name: 'report' },
+        {}
       ],
       arr2: [],
       data: {
