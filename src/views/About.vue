@@ -33,47 +33,18 @@ export default {
         { people: 'cn', id: 3, name: 'data' },
         { people: 'us', id: 4, name: 'report' }
       ],
-      arr2: []
-    };
-  },
-  mounted() {
-    this.init();
-    console.log(G6.registerEdge(), 9);
-  },
-  methods: {
-    init() {
-      console.log(G6, 6);
-      G6.registerEdge('mid-point-edge',
-        {
-          afterDraw(cfg, group) {
-          // 获取图形组中的第一个图形，在这里就是边的路径图形
-            debugger;
-            const shape = group.get('children')[0];
-            // 获取路径图形的中点坐标
-            const midPoint = shape.getPoint(0.5);
-            // 在中点增加一个矩形，注意矩形的原点在其左上角
-            group.addShape('rect', {
-              attrs: {
-                width: 10,
-                height: 10,
-                fill: '#f00',
-                // x 和 y 分别减去 width / 2 与 height / 2，使矩形中心在 midPoint 上
-                x: midPoint.x - 5,
-                y: midPoint.y - 5
-              }
-            });
-          },
-          update: undefined
-        },
-        'cubic'
-      );
-      const data = {
+      arr2: [],
+      data: {
         nodes: [
           {
             id: 'rect1',
             label: 'rect1',
+            type: 'rect',
+            size: [80, 40],
             x: 250,
             y: 150,
+            linkPoints: {
+              top: true },
             anchorPoints: [
               [0, 0.5],
               [1, 0.5],
@@ -84,6 +55,8 @@ export default {
           {
             id: 'rect2',
             label: 'rect2',
+            type: 'rect',
+            size: [80, 40],
             x: 450,
             y: 150,
             anchorPoints: [
@@ -92,24 +65,46 @@ export default {
               [0.5, 0],
               [0.5, 1]
             ]
-          }
-        ],
-        edges: [
+          },
           {
-            source: 'rect1',
-            target: 'rect2',
-            // 该边连入 source 点的第 0 个 anchorPoint，
-            sourceAnchor: 0.5,
-            // 该边连入 target 点的第 0 个 anchorPoint，
-            targetAnchor: 0.5,
-            type: 'cubic',
-            style: {
-              endArrow: true,
-              stroke: 'red'
-            }
+            id: 'rect4',
+            label: 'rect4',
+            type: 'rect',
+            size: [80, 40],
+            x: 650,
+            y: 150,
+            anchorPoints: [
+              [0, 0.5],
+              [1, 0.5],
+              [0.5, 0],
+              [0.5, 1]
+            ]
+          },
+          {
+            id: 'rect3',
+            label: 'rect3',
+            x: 450,
+            type: 'rect',
+            size: [80, 40],
+            y: 350,
+            anchorPoints: [
+              [0, 0.5],
+              [1, 0.5],
+              [0.5, 0],
+              [0.5, 1]
+            ]
           }
         ]
-      };
+      }
+    };
+  },
+  mounted() {
+    this.init();
+    console.log(G6.registerEdge(), 9);
+  },
+  methods: {
+    init() {
+      console.log(G6, 6);
 
       const width = document.getElementById('container').scrollWidth;
       const height = document.getElementById('container').scrollHeight || 500;
@@ -119,62 +114,140 @@ export default {
         height,
         // translate the graph to align the canvas's center, support by v3.5.1
         fitCenter: true,
-        modes: {
-          default: ['drag-canvas', 'drag-node']
+        nodeStateStyles: {
+          // 各状态下的样式，平铺的配置项仅在 keyShape 上生效。需要在其他 shape 样式上响应状态变化则写法不同，参见上文提到的 配置状态样式 链接
+          hover: {
+            fillOpacity: 0.1,
+            lineWidth: 10
+          }
         },
-        defaultNode: {
-          /* node type */
-          type: 'rect',
-          /* node size */
-          size: [80, 40],
-          labelCfg: {
-            /* label's position, options: center, top, bottom, left, right */
-            position: 'center'
-          },
-          /* configurations for four linkpoints */
-          linkPoints: {
-            top: true,
-            right: true,
-            bottom: true,
-            left: true
-          },
-          /* icon configuration */
-          icon: {
-            /* whether show the icon, false by default */
-            show: true
+        modes: {
+          default: ['drag-canvas', 'drag-node', 'zoom-canvas', {
+            type: 'create-edge',
+            trigger: 'drag' // 'click' by default. options: 'drag', 'click'
+          }]
+        },
+        // defaultNode: {
+        //   /* node type */
+        //   type: 'rect',
+        //   /* node size */
+        //   size: [80, 40],
+        //   labelCfg: {
+        //     /* label's position, options: center, top, bottom, left, right */
+        //     position: 'center'
+        //   },
+        //   /* configurations for four linkpoints */
+        //   // linkPoints: {
+        //   //   top: true,
+        //   //   right: true,
+        //   //   bottom: true,
+        //   //   left: true
+        //   // },
+        //   /* icon configuration */
+        //   icon: {
+        //     /* whether show the icon, false by default */
+        //     show: true
+        //   }
+        // },
+        defaultEdge: {
+          type: 'mid-point-edge',
+          style: {
+            stroke: 'red',
+            lineWidth: 2
           }
         }
       });
+      G6.registerEdge(
+        'mid-point-edge',
+        {
+          afterDraw(cfg, group) {
+            // 获取图形组中的第一个图形，在这里就是边的路径图形
+            const shape = group.get('children')[0];
+            // 获取路径图形的中点坐标
+            const midPoint = shape.getPoint(0.5);
+            // 在中点增加一个矩形，注意矩形的原点在其左上角
+            group.addShape('circle', {
+              attrs: {
+                r: 10,
+                fill: '#fff',
+                stroke: '#666',
+                cursor: 'pointer',
+                // x 和 y 分别减去 width / 2 与 height / 2，使矩形中心在 midPoint 上
+                x: midPoint.x,
+                y: midPoint.y
+              }
+            });
+          },
+          update: undefined
+        },
+        'cubic'
+      );
 
-      graph.data(data);
-      graph.render();
+      // 点击时选中，再点击时取消
+      graph.on('edge:click', (ev) => {
+        console.log('click', ev.target, 9);
+        if (ev.target.cfg.type === 'circle') {
+          alert('配置关联关系');
+        }
+        // const edge = ev.item;
+        // graph.setItemState(edge, 'selected', !edge.hasState('selected')); // 切换选中
+      });
+      graph.on('aftercreateedge', (e) => {
+        // const edges = graph.save().edges;
+        console.log(edges, 123);
+        // G6.Util.processParallelEdges(edges);
+        // graph.getEdges().forEach((edge, i) => {
+        //   graph.updateItem(edge, {
+        //     curveOffset: edges[i].curveOffset,
+        //     curvePosition: edges[i].curvePosition
+        //   });
+        // });
+      });
+      graph.on('edge:mouseenter', (ev) => {
+        // const edge = ev.item;
+        // graph.setItemState(edge, 'active', true);
+      });
+
+      graph.on('edge:mouseleave', (ev) => {
+        // const edge = ev.item;
+        // debugger;
+        // graph.setItemState(edge, 'active', false);
+      });
       graph.on('node:mouseenter', (evt) => {
-        console.log(evt, 'mouseenter');
-        const { item } = evt;
-        graph.setItemState(item, 'active', true);
+        const node = evt.item;
+        // 激活该节点的 hover 状态
+        graph.setItemState(node, 'hover', true);
       });
 
       graph.on('node:mouseleave', (evt) => {
-        console.log(evt, 'mouseleave');
-        const { item } = evt;
-        graph.setItemState(item, 'active', false);
+        const node = evt.item;
+        // 关闭该节点的 hover 状态
+        graph.setItemState(node, 'hover', false);
       });
 
       graph.on('node:click', (evt) => {
         console.log(evt, 'node:click');
-        const { item } = evt;
-        graph.setItemState(item, 'selected', true);
-      });
 
+        // const { item } = evt;
+        // graph.setItemState(item, 'selected', true);
+      });
+      graph.on('node:dragstart', (evt) => {
+        console.log(evt, 11);
+      });
       graph.on('canvas:click', (evt) => {
         console.log(evt, 'canvas:click');
+        console.log(evt.target);
         graph.getNodes().forEach((node) => {
           graph.clearItemStates(node);
         });
       });
+      graph.data(this.data);
+      graph.render();
     },
     onStart() {},
-    onEnd() {}
+    onEnd(e) {
+      console.log(e, 91);
+    }
   }
 };
 </script>

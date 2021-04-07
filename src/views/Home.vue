@@ -18,14 +18,14 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue';
 import Hom from './Hom';
-import testAaa from "npm-btn";
+import testAaa from 'npm-btn';
 export default {
   name: 'Home',
   components: {
 
     // HelloWorld
     Hom,
-        testAaa,
+    testAaa
   },
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
     };
   },
   mounted() {
-    console.log(testAaa,9);
+    console.log(testAaa, 9);
   },
   methods: {
     async registerHandle() {
